@@ -1,0 +1,6 @@
+a,b = map(int,input().split())
+min_num = min(a,b)
+max_num = max(a,b)
+A = int("1" * min_num)
+B = int("1" * max_num)
+print(A+B)
