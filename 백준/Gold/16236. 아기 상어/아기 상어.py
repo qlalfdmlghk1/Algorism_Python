@@ -1,4 +1,6 @@
-from heapq import heapify,heappush,heappop
+import sys
+input = sys.stdin.readline
+from heapq import heapify,heappush
 from collections import deque
 N = int(input())
 graph = []
@@ -26,14 +28,14 @@ def bfs(start_r,start_c, target_r, target_c) :
                     return visited[nex_r][nex_c]
     return False
 
-time = 0
-cnt = 0
-size = 2
-while True :
-    for i in range(N) :
+for i in range(N) :
         for j in range(N) :
             if graph[i][j] == 9 :
                 shark_r,shark_c = i,j
+
+time,cnt,size = 0,0,2
+
+while True :
     pq = []
     heapify(pq)
     for i in range(N) :
@@ -46,12 +48,14 @@ while True :
         target_time,target_r,target_c = pq[0]
         graph[target_r][target_c] = 9
         graph[shark_r][shark_c] = 0
+        shark_r,shark_c = target_r,target_c
+
         time += target_time
-    if not pq :
+        cnt += 1
+        
+        if cnt >= size :
+            cnt -= size
+            size += 1
+    else :
         print(time)
         break
-    
-    cnt += 1
-    if cnt >= size :
-        cnt -= size
-        size += 1
