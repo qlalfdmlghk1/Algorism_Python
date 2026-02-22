@@ -9,12 +9,13 @@ for _ in range(N) :
 
 dr,dc = [1,-1,0,0],[0,0,1,-1]
 
-def bfs(start_r,start_c, target_r, target_c) :
+def bfs(start_r,start_c) :
     global size
     visited = [[-1 for _ in range(N)] for _ in range(N)]
     q = deque()
     q.append((start_r,start_c))
     visited[start_r][start_c] = 0
+    candidate = []
     while q :
         cur_r,cur_c = q.popleft()
         for i in range(4) :
@@ -24,9 +25,12 @@ def bfs(start_r,start_c, target_r, target_c) :
                 if graph[nex_r][nex_c] <= size and visited[nex_r][nex_c] == -1 :
                     q.append((nex_r,nex_c))
                     visited[nex_r][nex_c] = visited[cur_r][cur_c] + 1
-                if nex_r == target_r and nex_c == target_c :
-                    return visited[nex_r][nex_c]
-    return False
+                    if 0 < graph[nex_r][nex_c] < size :
+                        candidate.append((visited[nex_r][nex_c],nex_r,nex_c))
+    if candidate :
+        return min(candidate)
+    else :
+        return False
 
 for i in range(N) :
         for j in range(N) :
@@ -36,16 +40,10 @@ for i in range(N) :
 time,cnt,size = 0,0,2
 
 while True :
-    pq = []
-    heapify(pq)
-    for i in range(N) :
-        for j in range(N) :
-            if size > graph[i][j] and graph[i][j] != 0 :
-                distance = bfs(shark_r,shark_c,i,j)
-                if distance :
-                    heappush(pq,(distance, i,j))
-    if pq :
-        target_time,target_r,target_c = pq[0]
+    target = bfs(shark_r,shark_c)
+
+    if target :
+        target_time,target_r,target_c = target
         graph[target_r][target_c] = 9
         graph[shark_r][shark_c] = 0
         shark_r,shark_c = target_r,target_c
@@ -53,9 +51,10 @@ while True :
         time += target_time
         cnt += 1
         
-        if cnt >= size :
-            cnt -= size
+        if cnt == size :
+            cnt = 0
             size += 1
     else :
         print(time)
         break
+    
