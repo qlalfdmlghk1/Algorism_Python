@@ -1,19 +1,20 @@
 n = int(input())
 m = int(input())
-array = list(map(int,input().split()))
+arr = list(map(int,input().split()))
+arr.sort()
 
-lp,rp = 0,n-1
-cnt = 0
+left = 0
+right = n-1
+answer = 0
 
-array.sort()
-
-while (lp < rp) :
-    if (array[lp] + array[rp] == m ) :
-        cnt += 1
-        lp += 1
-        rp -= 1
-    elif (array[lp] + array[rp] < m ) :
-        lp += 1
+while left < right :
+    # mid = (left + right) // 2
+    check = arr[left] + arr[right]
+    if check == m :
+        answer += 1
+        right -= 1
+    elif check < m :
+        left += 1
     else :
-        rp -= 1
-print(cnt)
+        right -= 1
+print(answer)
