@@ -36,8 +36,8 @@ if balls[0] == "B" :
 case3 = blue - case3
 
 case4 = 0
-if balls[0] == "B" :
-    for ball in ball[::-1] :
+if balls[-1] == "B" :
+    for ball in balls[::-1] :
         if ball == "B" :
             case4 += 1
         else :
