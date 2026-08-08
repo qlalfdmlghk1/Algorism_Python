@@ -14,16 +14,10 @@ function solution(genres, plays) {
     list.sort((a, b) => b[0] - a[0]); // 재생수 내림차순
   }
 
-  for ([mk, mv] of sorted_music) {
-    let cnt = 0;
-    for ([tk, tv] of genre_total) {
-      if (tk == mk) {
-        for (v of tv) {
-          answer.push(v[1]);
-          cnt += 1;
-          if (cnt == 2) break;
-        }
-      }
+  for (const [genre] of sorted_music) {
+    const list = genre_total.get(genre);
+    for (const [, idx] of list.slice(0, 2)) {
+      answer.push(idx);
     }
   }
 
