@@ -1,25 +1,24 @@
 function solution(genres, plays) {
-  var answer = [];
-  const musics = new Map();
-  const genre_total = new Map();
-  const total_music = genres.length;
-  for (let i = 0; i < total_music; i++) {
-    musics.set(genres[i], (musics.get(genres[i]) || 0) + plays[i]);
-    genre_total.set(genres[i], [...(genre_total.get(genres[i]) || []), [plays[i], i]]);
+  const answer = [];
+  const playCnt = plays.length;
+  const genreTotal = new Map();
+  const genrePerPlays = new Map();
+
+  for (let i = 0; i < playCnt; i++) {
+    genreTotal.set(genres[i], (genreTotal.get(genres[i]) || 0) + plays[i]);
+    if (!genrePerPlays.has(genres[i])) genrePerPlays.set(genres[i], []);
+    genrePerPlays.get(genres[i]).push([plays[i], i]);
+  }
+  sortedGenre = [...genreTotal].sort((a, b) => b[1] - a[1]);
+
+  for (const list of genrePerPlays.values()) {
+    list.sort((a, b) => b[0] - a[0]);
   }
 
-  const sorted_music = new Map([...musics].sort((a, b) => b[1] - a[1]));
-
-  for (const list of genre_total.values()) {
-    list.sort((a, b) => b[0] - a[0]); // 재생수 내림차순
-  }
-
-  for (const [genre] of sorted_music) {
-    const list = genre_total.get(genre);
-    for (const [, idx] of list.slice(0, 2)) {
-      answer.push(idx);
+  for (const sg of sortedGenre) {
+    for (const gpp of genrePerPlays.get(sg[0]).slice(0, 2)) {
+      answer.push(gpp[1]);
     }
   }
-
   return answer;
 }
